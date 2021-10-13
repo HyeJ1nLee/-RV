@@ -1,0 +1,38 @@
+% Intrinsic Parameters
+fx = 1000;
+fy = 1000;
+cx = 640;
+cy = 480;
+
+% 파란점의 픽셀 위치
+u = 760;
+v = 545;
+
+% 임의의 카메라 설치 위치
+theta_x = pi/2 - pi/6;  % x축 각도
+theta_y = -pi/2;        % y축 각도
+theta_z = pi/2;         % z축 각도
+% 위치
+tx = 0;
+ty = -5;
+tz = 0.2;
+
+
+% Camera Matrix?
+K = [fx 0 cx ; 0 fy cy ; 0 0 1]
+
+% Rotation Matrix?
+Rx = [ 1 0 0 ;  0 cos(theta_x) -sin(theta_x) ; 0 sin(theta_x) cos(theta_x) ];
+Ry= [ cos(theta_y) 0 sin(theta_y) ; 0 1 0 ; -sin(theta_y) 0 cos(theta_y) ];
+Rz = [ cos(theta_z) -sin(theta_z) 0 ; sin(theta_z) cos(theta_z) 0 ; 0 0 1 ];
+
+R = Rz * Ry * Rx
+
+% Translation Matrix?
+t = [ tx ty tz ]'
+
+%   좌표 값?
+W = inv([inv(K) * [ u v 1]' -R( : , 1) -R( : , 2)]) * t;
+Xw = W(2)
+Yw = W(3)
+Zw = 0
